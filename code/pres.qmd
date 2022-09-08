@@ -1,0 +1,17 @@
+---
+title: "Differential Privacy for Mobility Data used in Epidmiological Models"
+format: revealjs
+editor: visual
+---
+
+## Background
+
+## Questions we will answer
+
+## The Process
+
+## The City 
+
+## 
+
+## The Team
