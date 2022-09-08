@@ -1,5 +1,5 @@
 ---
-title: "Differential Privacy for Mobility Data used in Epidmiological Models"
+title: "Differential Privacy for Mobility Data used in Epidemiological Models"
 format: revealjs
 editor: visual
 ---
@@ -10,7 +10,12 @@ editor: visual
 
 ## The Process
 
-## The City 
+1.  Create a set of "cities" of varying sizes
+2.  Use a gravity model to simulate transitions between "cities"
+3.  User selects two transitions that they would make, one common and one uncommon
+4.  The system visualizes these transitions when aggregated and under various layers of applied noise
+
+## The Cities
 
 ## 
 
