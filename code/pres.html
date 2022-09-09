@@ -9,7 +9,7 @@
 <link href="pres_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.0.36">
 
-  <title>Differential Privacy for Mobility Data used in Epidmiological Models</title>
+  <title>Differential Privacy for Mobility Data used in Epidemiological Models</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -318,11 +318,118 @@
     <div class="slides">
 
 <section id="title-slide" class="center">
-  <h1 class="title">Differential Privacy for Mobility Data used in Epidmiological Models</h1>
+  <h1 class="title">Differential Privacy for Mobility Data used in Epidemiological Models</h1>
 </section>
 
-<section id="differential-privacy-for-mobility-data-used-in-epidemiological-models" class="title-slide slide level1 center">
-<h1>Differential Privacy for Mobility Data used in Epidemiological Models</h1>
+<section id="background" class="slide level2">
+<h2>Background</h2>
+<p>We begin with a simulated set of “cities”. In this case there are 36 cities on a 6x6 grid located 100km from their closest neighbor. This is a toy example and real transition data has varying spatial and temporal aggregations.</p>
+</section>
+<section id="background-1" class="slide level2">
+<h2>Background</h2>
+
+<img data-src="pres_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
+<section id="background-2" class="slide level2">
+<h2>Background</h2>
+<p>Notice that bigger cities have more transitions between them and some smaller cities don’t have any major transitions outside of those to their neighbors.</p>
+</section>
+<section id="background-3" class="slide level2">
+<h2>Background</h2>
+
+<img data-src="pres_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<section id="your-transitions" class="slide level2">
+<h2>Your transitions</h2>
+<p>How let’s check out the two common and uncommon transitions that you’ve chosen. Take a moment to look at:</p>
+<p>1) How many other individuals move through your set of transitions?</p>
+<p>2) Even though the data are at the “city” level, would your movement be easily identified?</p>
+</section>
+<section id="your-transitions-1" class="slide level2">
+<h2>Your transitions</h2>
+
+<img data-src="pres_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
+<section id="aggregation" class="slide level2">
+<h2>Aggregation</h2>
+<ul>
+<li><p>What happens when your data are aggregated?</p></li>
+<li><p>Can you still identify your transitions easily?</p></li>
+</ul>
+</section>
+<section id="aggregation-1" class="slide level2">
+<h2>Aggregation</h2>
+
+<img data-src="pres_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
+<section id="not-all-transitions-are-equal" class="slide level2">
+<h2>Not all transitions are equal</h2>
+<ul>
+<li><p>Depending on the “uncommon” transition you’ve chosen, it’s likely that even with aggregation, the single trip could be easily identified</p></li>
+<li><p>These transitions can identify individuals, but the behavior they represent may be important for epidemiological models, depending on your question of interest</p></li>
+</ul>
+</section>
+<section id="identifiable-transitions" class="slide level2">
+<h2>Identifiable Transitions</h2>
+<p>1) Those that move at different times than others (ex. night shift)</p>
+<p>2) Those that move against the standard flow (counter current commutes)</p>
+<p>3) Those in rural areas that may be a part of a small number</p>
+</section>
+<section id="lets-see-what-happens-when-we-add-a-tiny-bit-of-noise" class="slide level2">
+<h2>Let’s see what happens when we add a tiny bit of noise</h2>
+<ul>
+<li>What do you notice about the transition network before aggregation? How do the transitions compare to the baseline?</li>
+</ul>
+</section>
+<section id="a-little-bit-of-noise" class="slide level2">
+<h2>A little bit of noise…</h2>
+
+<img data-src="pres_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section>
+<section id="and-a-little-bit-more-noise" class="slide level2">
+<h2>And a little bit more noise…</h2>
+
+<img data-src="pres_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+<section id="and-a-little-bit-more-noise-still" class="slide level2">
+<h2>And a little bit more noise still…</h2>
+
+<img data-src="pres_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
+<section id="follow-up-questions" class="slide level2">
+<h2>Follow up questions</h2>
+<ul>
+<li><p>What happens to the transition network as you add more noise?</p></li>
+<li><p>What happens to the aggregate transitions (common and uncommon) as you add noise?</p></li>
+<li><p>What do you think happens to metrics such as disease spread, if these networks are used to simulate transitions between spatial regions?</p></li>
+</ul>
+</section>
+<section id="our-analysis" class="slide level2">
+<h2>Our Analysis</h2>
+<ul>
+<li><p>We simulated thousands of epidemiological metapopulation models which are often used to evaluate resource allocation and vaccine distribution</p></li>
+<li><p>We evaluated various common epidemiological parameters (outputs) of interest from these models as we increased the noise included in our mobility data</p></li>
+</ul>
+</section>
+<section id="our-analysis-1" class="slide level2">
+<h2>Our Analysis</h2>
+<ul>
+<li><p>We found that most metrics are stable through a wide range of noise (much larger than previous studies have allowed).</p></li>
+<li><p>This enables us to provide <strong>significant privacy protection</strong> to individuals who contribute their data to the analysis <strong>without biasing</strong> the results of analysis</p></li>
+<li><p>This relates directly to trust:</p>
+<ul>
+<li><p>Trust in appropriate stewardship of privacy and identifiable data</p></li>
+<li><p>Trust in the outputs of epidemiological models that are not biased by privacy preserving mechanisms</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="key-questions" class="slide level2">
+<h2>Key Questions</h2>
+<ul>
+<li><p>Who gets to decide what spatial and temporal scales are to be used?</p></li>
+<li><p>Who gets to decide how much privacy preserving noise is added to the data?</p></li>
+<li><p>Who gets to drive the research questions which inevitably will set the balance point between bias and privacy?</p></li>
+</ul>
+</section>
+<section id="conclusion" class="slide level2">
+<h2>Conclusion</h2>
+<ul>
+<li><p>Feel free to try it out again with different common and uncommon transitions!</p></li>
+<li><p>For more information please check out our lightning talk at 10:50AM</p></li>
+</ul>
 <div class="footer footer-default">
 
 </div>
@@ -538,6 +645,48 @@
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          // dispatch for htmlwidgets
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for reveal
+        if (window.Reveal) {
+          window.Reveal.addEventListener("slidechanged", function(event) {
+            fireSlideChanged(event.previousSlide, event.currentSlide);
+          });
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

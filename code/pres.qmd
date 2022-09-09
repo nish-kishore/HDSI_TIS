@@ -2,21 +2,162 @@
 title: "Differential Privacy for Mobility Data used in Epidemiological Models"
 format: revealjs
 editor: visual
+params:
+  common_start: 22
+  common_end: 35
+  uncommon_start: 6
+  uncommon_end: 15
 ---
 
 ## Background
 
-## Questions we will answer
+```{r, echo=FALSE, include=FALSE}
+library(here)
+source(here("code","src.R"))
+city_list <- create_cities()
+trans_list <- create_all_trans(city_list)
+chosen_trans <-   list(
+    "Common" = list("start" = params$common_start, "end" = params$common_end),
+    "Uncommon" = list("start" = params$uncommon_start, "end" = params$uncommon_end)
+  )
+user_trans_list <- add_trans(trans_list, chosen_trans)
+```
 
-## The Process
+We begin with a simulated set of "cities". In this case there are 36 cities on a 6x6 grid located 100km from their closest neighbor. This is a toy example and real transition data has varying spatial and temporal aggregations.
 
-1.  Create a set of "cities" of varying sizes
-2.  Use a gravity model to simulate transitions between "cities"
-3.  User selects two transitions that they would make, one common and one uncommon
-4.  The system visualizes these transitions when aggregated and under various layers of applied noise
+## Background
 
-## The Cities
+```{r}
+plot_cities(city_list)
+```
 
-## 
+## Background
 
-## The Team
+Notice that bigger cities have more transitions between them and some smaller cities don't have any major transitions outside of those to their neighbors.
+
+## Background
+
+```{r}
+plot_trans(city_list, trans_list)
+```
+
+## Your transitions
+
+How let's check out the two common and uncommon transitions that you've chosen. Take a moment to look at:
+
+1\) How many other individuals move through your set of transitions?
+
+2\) Even though the data are at the "city" level, would your movement be easily identified?
+
+## Your transitions
+
+```{r}
+plot_trans(city_list, user_trans_list)
+```
+
+## Aggregation
+
+-   What happens when your data are aggregated?
+
+-   Can you still identify your transitions easily?
+
+## Aggregation
+
+```{r}
+#aggregate data
+x <- aggregate_network(city_list, user_trans_list)
+
+#visualize aggregated data
+plot_trans(x$agg_city, x$agg_trans, agg = T)
+```
+
+## Not all transitions are equal
+
+-   Depending on the "uncommon" transition you've chosen, it's likely that even with aggregation, the single trip could be easily identified
+
+-   These transitions can identify individuals, but the behavior they represent may be important for epidemiological models, depending on your question of interest
+
+## Identifiable Transitions
+
+1\) Those that move at different times than others (ex. night shift)
+
+2\) Those that move against the standard flow (counter current commutes)
+
+3\) Those in rural areas that may be a part of a small number
+
+## Let's see what happens when we add a tiny bit of noise
+
+-   What do you notice about the transition network before aggregation? How do the transitions compare to the baseline?
+
+## A little bit of noise...
+
+```{r}
+#visualize with small amounts of noise
+noisy_trans <- add_noise(user_trans_list, noise = 0.1)
+a <- plot_trans(city_list, noisy_trans, noise = 0.1)
+x <- aggregate_network(city_list, noisy_trans)
+b <- plot_trans(x$agg_city, x$agg_trans, agg = T)
+ggarrange(a,b, common.legend = T, ncol = 1, legend = "right")
+```
+
+## And a little bit more noise...
+
+```{r}
+#visualize with small amounts of noise
+noisy_trans <- add_noise(user_trans_list, noise = 0.5)
+a <- plot_trans(city_list, noisy_trans, noise = 0.5)
+x <- aggregate_network(city_list, noisy_trans)
+b <- plot_trans(x$agg_city, x$agg_trans, agg = T)
+ggarrange(a,b, common.legend = T, ncol = 1, legend = "right")
+```
+
+## And a little bit more noise still...
+
+```{r}
+#visualize with small amounts of noise
+noisy_trans <- add_noise(user_trans_list, noise = 0.8)
+a <- plot_trans(city_list, noisy_trans, noise = 0.8)
+x <- aggregate_network(city_list, noisy_trans)
+b <- plot_trans(x$agg_city, x$agg_trans, agg = T)
+ggarrange(a,b, common.legend = T, ncol = 1, legend = "right")
+```
+
+## Follow up questions
+
+-   What happens to the transition network as you add more noise?
+
+-   What happens to the aggregate transitions (common and uncommon) as you add noise?
+
+-   What do you think happens to metrics such as disease spread, if these networks are used to simulate transitions between spatial regions?
+
+## Our Analysis
+
+-   We simulated thousands of epidemiological metapopulation models which are often used to evaluate resource allocation and vaccine distribution
+
+-   We evaluated various common epidemiological parameters (outputs) of interest from these models as we increased the noise included in our mobility data
+
+## Our Analysis
+
+-   We found that most metrics are stable through a wide range of noise (much larger than previous studies have allowed).
+
+-   This enables us to provide **significant privacy protection** to individuals who contribute their data to the analysis **without biasing** the results of analysis
+
+-   This relates directly to trust:
+
+    -   Trust in appropriate stewardship of privacy and identifiable data
+
+    -   Trust in the outputs of epidemiological models that are not biased by privacy preserving mechanisms
+
+## Key Questions
+
+-   Who gets to decide what spatial and temporal scales are to be used?
+
+-   Who gets to decide how much privacy preserving noise is added to the data?
+
+-   Who gets to drive the research questions which inevitably will set the balance point between bias and privacy?
+
+## Conclusion
+
+-   Feel free to try it out again with different common and uncommon transitions!
+
+-   For more information please check out our lightning talk at 10:50AM

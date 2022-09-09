@@ -2,6 +2,7 @@
 library(tidyverse)
 library(ExtDist)
 library(ggpubr)
+library(quarto)
 
 #' @description Create "city" line list
 #' @param n The number of cities to create (must be square term)
@@ -218,7 +219,7 @@ add_trans <- function(trans_list, chosen_trans){
 #' @param trans_list Tibble of transitions
 #' @param noise The amoung of noise to add to transitions
 add_noise <- function(trans_list, noise = 0.5){
-  trans_list$diff <- rLaplace(n = nrow(trans_list), mu = 0, b = 1)
+  trans_list$diff <- rLaplace(n = nrow(trans_list), mu = 0, b = noise)
   trans_list <- trans_list |> 
     mutate(trans = round(trans + diff, 0), 
            trans = ifelse(trans < 0, 0, trans)) |>
